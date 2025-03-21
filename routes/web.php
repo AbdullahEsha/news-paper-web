@@ -59,8 +59,8 @@ Route::group(['middleware' => ['sess']], function () {
         Route::get('/admin/blog-category', [CategoryController::class, 'index']);
         Route::post('/admin/blog-category', [CategoryController::class, 'create']);
 
-        Route::get('/admin/blog-upload', [BlogController::class, 'index']);
-        Route::post('/admin/blog-upload', [BlogController::class, 'create'])
+        Route::get('/admin/upload', [BlogController::class, 'index']);
+        Route::post('/admin/upload', [BlogController::class, 'create'])
             ->name('admin.store');
 
         Route::get('/admin/blog', [BlogController::class, 'show', 'as' => 'admin.viewAllBlog']);

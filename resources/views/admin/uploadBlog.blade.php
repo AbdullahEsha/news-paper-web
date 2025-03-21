@@ -2,14 +2,14 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
-    @include('components.head')
+    <x-head />
     <title>Admin - Upload Blog</title>
 </head>
 
 <body class="bg-gray-100">
     <div class="flex min-h-screen">
         <!-- Sidebar -->
-        @include('components.sidebar')
+        <x-sidebar />
 
         <!-- Main Content -->
         <div class="flex-1 p-8">

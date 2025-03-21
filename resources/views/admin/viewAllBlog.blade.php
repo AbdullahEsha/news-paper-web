@@ -12,14 +12,14 @@
         <div class="main-content">
             <h1 class="admin-blog-head">All Blog</h1>
             <hr />
-            <p class="text-success blog-upload-msg">
+            <p class="text-success">
                 {{session('msg')}}
             </p>
-            <p class="text-danger blog-upload-msg">
+            <p class="text-danger">
                 {{session('error')}}
             </p>
             @if (count($errors) > 0)
-            <p class="text-danger blog-upload-msg">
+            <p class="text-danger">
                 @foreach ($errors->all() as $error)
                 {{ $error }}<br />
                 @endforeach
