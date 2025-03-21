@@ -6,63 +6,77 @@
     <title>Admin - Blog</title>
 </head>
 
-<body>
-    <div class="admin-container">
+<body class="bg-gray-100">
+    <div class="flex min-h-screen">
+        <!-- Sidebar -->
         @include("components/sidebar")
-        <div class="main-content">
-            <h1 class="admin-blog-head">All Blog</h1>
-            <hr />
-            <p class="text-success">
-                {{session('msg')}}
+
+        <!-- Main Content -->
+        <div class="flex-1 p-8">
+            <h1 class="text-2xl font-bold mb-4">All Blog</h1>
+            <hr class="mb-4" />
+
+            <!-- Success Message -->
+            @if(session('msg'))
+            <p class="text-green-600 mb-4">
+                {{ session('msg') }}
             </p>
-            <p class="text-danger">
-                {{session('error')}}
+            @endif
+
+            <!-- Error Message -->
+            @if(session('error'))
+            <p class="text-red-600 mb-4">
+                {{ session('error') }}
             </p>
+            @endif
+
+            <!-- Validation Errors -->
             @if (count($errors) > 0)
-            <p class="text-danger">
+            <p class="text-red-600 mb-4">
                 @foreach ($errors->all() as $error)
                 {{ $error }}<br />
                 @endforeach
             </p>
             @endif
-            <div class="container">
-                <div class="form-group pull-right">
-                    <input type="text" class="search form-control" placeholder="What you looking for?">
+
+            <!-- Search and Table -->
+            <div class="container mx-auto">
+                <div class="mb-4 flex justify-end">
+                    <input type="text" class="px-4 py-2 border rounded-lg" placeholder="What are you looking for?">
                 </div>
-                <span class="counter pull-right"></span>
-                <table class="table table-hover table-bordered results">
-                    <thead>
+
+                <table class="min-w-full bg-white border rounded-lg overflow-hidden">
+                    <thead class="bg-gray-200">
                         <tr>
-                            <th>#</th>
-                            <th class="col-md-3 col-xs-5">Title</th>
-                            <th class="col-md-7 col-xs-4">Short Description</th>
-                            <th class="col-md-1 col-xs-3">Status</th>
-                            <th class="col-md-1 col-xs-3">Action</th>
-                        </tr>
-                        <tr class="warning no-result">
-                            <td colspan="4"><i class="fa fa-warning"></i> No result</td>
+                            <th class="px-4 py-2">#</th>
+                            <th class="px-4 py-2">Title</th>
+                            <th class="px-4 py-2">Short Description</th>
+                            <th class="px-4 py-2">Status</th>
+                            <th class="px-4 py-2">Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @for($i=0; $i < count($blogData); $i++) <tr>
-                            <td scope="row">{{$i+1}}</th>
-                            <td>{{$blogData[$i]['title']}}</td>
-                            <td>
-                                @if(preg_match("/(?:\w+(?:\W+|$)){0,5}/", strip_tags($blogData[$i]['description']),
-                                $matches))
-                                {{$matches[0]}}...
+                        @for($i = 0; $i < count($blogData); $i++) <tr class="hover:bg-gray-50">
+                            <td class="px-4 py-2">{{ $i + 1 }}</td>
+                            <td class="px-4 py-2">{{ $blogData[$i]['title'] }}</td>
+                            <td class="px-4 py-2">
+                                @if(preg_match("/(?:\w+(?:\W+|$)){0,5}/", strip_tags($blogData[$i]['description']), $matches))
+                                {{ $matches[0] }}...
                                 @endif
                             </td>
-                            @if($blogData[$i]['status'] === "publish")
-                            <td style="background-color: #04AA6D; text-transform: capitalize">{{$blogData[$i]['status']}}</td>
-                            @elseif($blogData[$i]['status'] === "draft")
-                            <td style="background-color: #fff200; text-transform: capitalize">{{$blogData[$i]['status']}}</td>
-                            @endif
-                            <td>
-                                <a href="/admin/blog-delete/{{$blogData[$i]['slug']}}" style="color: red"><i
-                                        class="fa-solid fa-trash" title="Delete"></i></a> <a
-                                    href="/admin/blog-edit/{{$blogData[$i]['slug']}}" style="color: green"><i
-                                        class="fa-regular fa-pen-to-square" title="Edit"></i></a>
+                            <td class="px-4 py-2 text-center capitalize
+                                @if($blogData[$i]['status'] === 'publish') bg-green-100 text-green-800
+                                @elseif($blogData[$i]['status'] === 'draft') bg-yellow-100 text-yellow-800
+                                @endif">
+                                {{ $blogData[$i]['status'] }}
+                            </td>
+                            <td class="px-4 py-2">
+                                <a href="/admin/blog-delete/{{ $blogData[$i]['slug'] }}" class="text-red-600 hover:text-red-800 mr-2">
+                                    <i class="fas fa-trash" title="Delete"></i>
+                                </a>
+                                <a href="/admin/blog-edit/{{ $blogData[$i]['slug'] }}" class="text-green-600 hover:text-green-800">
+                                    <i class="fas fa-edit" title="Edit"></i>
+                                </a>
                             </td>
                             </tr>
                             @endfor
