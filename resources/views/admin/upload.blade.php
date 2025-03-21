@@ -3,7 +3,7 @@
 
 <head>
     <x-head />
-    <title>Admin - Upload Blog</title>
+    <title>Admin - Upload</title>
 </head>
 
 <body class="bg-gray-100">
@@ -13,7 +13,7 @@
 
         <!-- Main Content -->
         <div class="flex-1 p-8">
-            <h1 class="text-2xl font-bold text-gray-900 mb-6">Upload Blog</h1>
+            <h1 class="text-2xl font-bold text-gray-900 mb-6">Upload News</h1>
             <hr class="mb-6 border-gray-300" />
 
             <!-- Form Container -->

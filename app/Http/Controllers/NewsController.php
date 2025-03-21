@@ -4,12 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
-use App\Models\Blog;
+use App\Models\News;
 use App\Models\Category;
 use Symfony\Component\VarDumper\VarDumper;
 use Illuminate\Support\Facades\DB;
 
-class BlogController extends Controller
+class NewsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -20,7 +20,7 @@ class BlogController extends Controller
     {
         try {
             $category = Category::orderBy('id', 'desc')->get();
-            return view('admin.uploadBlog')->with('category', $category);
+            return view('admin.upload')->with('category', $category);
         } catch (\Exception $e) {
             $req->session(['error', $e->getMessage()]);
         }
@@ -33,20 +33,20 @@ class BlogController extends Controller
      */
     public function create(Request $req)
     {
-        $blogUpload = new Blog();
+        $NewsUpload = new News();
         try {
-            $blogUpload->title = $req->title;
-            $blogUpload->slug = $req->slug;
-            $blogUpload->description = $req->description;
-            $blogUpload->metaDescription = $req->metaDescription;
-            $blogUpload->author = $req->author;
-            $blogUpload->status = $req->status;
-            $blogUpload->category = $req->category;
+            $NewsUpload->title = $req->title;
+            $NewsUpload->slug = $req->slug;
+            $NewsUpload->description = $req->description;
+            $NewsUpload->metaDescription = $req->metaDescription;
+            $NewsUpload->author = $req->author;
+            $NewsUpload->status = $req->status;
+            $NewsUpload->category = $req->category;
 
-            $blogUpload->save();
+            $NewsUpload->save();
 
-            $req->session(['msg', 'Blog was successfully uploaded!!']);
-            return redirect('/admin/blog');
+            $req->session(['msg', 'News was successfully uploaded!!']);
+            return redirect('/admin/News');
         } catch (\Exception $e) {
             $req->session(['error', $e->getMessage()]);
             return redirect('/error');
@@ -57,14 +57,14 @@ class BlogController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Blog  $blog
+     * @param  \App\Models\News  $News
      * @return \Illuminate\Http\Response
      */
     public function show(Request $req)
     {
         try {
-            $blogData = Blog::orderBy('id', 'desc')->get();
-            return view('admin.viewAllBlog')->with('blogData', $blogData);
+            $NewsData = News::orderBy('id', 'desc')->get();
+            return view('admin.viewAll')->with('NewsData', $NewsData);
         } catch (\Exception $e) {
             $req->session(['error', $e->getMessage()]);
         }
@@ -73,14 +73,14 @@ class BlogController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Blog  $blog
+     * @param  \App\Models\News  $News
      * @return \Illuminate\Http\Response
      */
-    public function viewAllBlog(Request $req)
+    public function viewAllNews(Request $req)
     {
         try {
-            $allblog = Blog::orderBy('id', 'desc')->get();
-            return view('blog')->with('allblog', $allblog);
+            $allNews = News::orderBy('id', 'desc')->get();
+            return view('News')->with('allNews', $allNews);
         } catch (\Exception $e) {
             $req->session(['error', $e->getMessage()]);
         }
@@ -89,17 +89,17 @@ class BlogController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Blog  $blog
+     * @param  \App\Models\News  $News
      * @return \Illuminate\Http\Response
      */
-    public function viewAllBlogHome(Request $req)
+    public function viewAllNewsHome(Request $req)
     {
         try {
-            $blogDataView = Blog::orderBy('id', 'desc')->get();
-            $blogCategoryView = Blog::groupBy('category')->get();
-            $blogAllCategory = Category::all();
+            $NewsDataView = News::orderBy('id', 'desc')->get();
+            $NewsCategoryView = News::groupBy('category')->get();
+            $NewsAllCategory = Category::all();
 
-            return view('home')->with('blogDataView', $blogDataView)->with('blogCategoryView', $blogCategoryView)->with('blogAllCategory', $blogAllCategory);
+            return view('home')->with('NewsDataView', $NewsDataView)->with('NewsCategoryView', $NewsCategoryView)->with('NewsAllCategory', $NewsAllCategory);
         } catch (\Exception $e) {
             $req->session(['error', $e->getMessage()]);
             return redirect('/error');
@@ -107,33 +107,33 @@ class BlogController extends Controller
     }
 
     /**
-     * Display the specified Blog
+     * Display the specified News
      *
-     * @param  \App\Models\Blog  $blog
+     * @param  \App\Models\News  $News
      * @return \Illuminate\Http\Response
      */
-    public function individualBlog(Request $req, $slug)
+    public function individualNews(Request $req, $slug)
     {
         try {
-            $individual = Blog::whereIn('slug', [$slug])->first();
-            $allBlogData = Blog::orderBy('id', 'desc')->get();
-            return view('blogIndividual')->with('individual', $individual)->with("allBlogData", $allBlogData);
+            $individual = News::whereIn('slug', [$slug])->first();
+            $allNewsData = News::orderBy('id', 'desc')->get();
+            return view('NewsIndividual')->with('individual', $individual)->with("allNewsData", $allNewsData);
         } catch (\Exception $e) {
             $req->session(['error', $e->getMessage()]);
         }
     }
 
     /**
-     * Display the specified Blog for delete.
+     * Display the specified News for delete.
      *
-     * @param  \App\Models\Blog  $blog
+     * @param  \App\Models\News  $News
      * @return \Illuminate\Http\Response
      */
-    public function showBlogDestroy(Request $req, $slug)
+    public function showNewsDestroy(Request $req, $slug)
     {
         try {
-            $findBlog = Blog::whereIn('slug', [$slug])->first();
-            return view('admin.deleteBlog')->with('findBlog', $findBlog);
+            $findNews = News::whereIn('slug', [$slug])->first();
+            return view('admin.deleteNews')->with('findNews', $findNews);
         } catch (\Exception $e) {
             $req->session(['error', $e->getMessage()]);
         }
@@ -143,15 +143,15 @@ class BlogController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Blog  $blog
+     * @param  \App\Models\News  $News
      * @return \Illuminate\Http\Response
      */
-    public function showBlogEdit(Request $req, $slug)
+    public function showNewsEdit(Request $req, $slug)
     {
         try {
-            $editBlog = Blog::whereIn('slug', [$slug])->first();
+            $editNews = News::whereIn('slug', [$slug])->first();
             $categoryEdit = Category::orderBy('id', 'desc')->get();
-            return view('admin.editBlog')->with('editBlog', $editBlog)->with("categoryEdit", $categoryEdit);
+            return view('admin.editNews')->with('editNews', $editNews)->with("categoryEdit", $categoryEdit);
         } catch (\Exception $e) {
             $req->session(['error', $e->getMessage()]);
         }
@@ -161,12 +161,12 @@ class BlogController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Blog  $blog
+     * @param  \App\Models\News  $News
      * @return \Illuminate\Http\Response
      */
     public function update(Request $req)
     {
-        $update = Blog::find($req->id);
+        $update = News::find($req->id);
         try {
             $update->title = $req->title;
             $update->slug = $req->slug;
@@ -178,8 +178,8 @@ class BlogController extends Controller
 
             $update->update();
 
-            $req->session(['msg', 'Blog was successfully updated!!']);
-            return redirect('/admin/blog');
+            $req->session(['msg', 'News was successfully updated!!']);
+            return redirect('/admin/News');
         } catch (\Exception $e) {
             $req->session(['error', $e->getMessage()]);
             return redirect('/error');
@@ -189,16 +189,16 @@ class BlogController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Blog  $blog
+     * @param  \App\Models\News  $News
      * @return \Illuminate\Http\Response
      */
     public function destroy(Request $req)
     {
-        $deleteBlog = Blog::find($req->id);
+        $deleteNews = News::find($req->id);
         try {
-            $deleteBlog->delete();
-            $req->session(['msg', 'Blog was successfully deleted!!']);
-            return redirect('/admin/blog');
+            $deleteNews->delete();
+            $req->session(['msg', 'News was successfully deleted!!']);
+            return redirect('/admin/News');
         } catch (\Exception $e) {
             $req->session(['error', $e->getMessage()]);
         }

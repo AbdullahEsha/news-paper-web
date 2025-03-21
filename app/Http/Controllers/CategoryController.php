@@ -20,7 +20,7 @@ class CategoryController extends Controller
     {
         try {
             $categorydata = Category::orderBy('id', 'desc')->get();
-            return view('admin.blogCategory')->with('categorydata', $categorydata);
+            return view('admin.category')->with('categorydata', $categorydata);
         } catch (\Exception $e) {
             $req->session(['error', $e->getMessage()]);
             return redirect('/error');

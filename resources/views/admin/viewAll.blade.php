@@ -2,7 +2,7 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
-    @include("components/head")
+    <x-head />
     <title>Admin - Blog</title>
 </head>
 
@@ -65,7 +65,7 @@
                                 @endif
                             </td>
                             <td class="px-4 py-2 text-center capitalize
-                                @if($blogData[$i]['status'] === 'publish') bg-green-100 text-green-800
+                                @if($blogData[$i]['status'] === 'publish') bg-green-200 text-green-800
                                 @elseif($blogData[$i]['status'] === 'draft') bg-yellow-100 text-yellow-800
                                 @endif">
                                 {{ $blogData[$i]['status'] }}

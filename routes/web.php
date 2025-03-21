@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\LogoutController;
-use App\Http\Controllers\BlogController;
+use App\Http\Controllers\NewsController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\RegisterController;
 
@@ -19,7 +19,7 @@ use App\Http\Controllers\RegisterController;
 */
 
 
-Route::get('/', [BlogController::class, 'viewAllBlogHome', 'as' => 'blogDataView', 'as' => 'blogCategoryView', 'as' => 'blogAllCategory']);
+Route::get('/', [NewsController::class, 'viewAllNewsHome', 'as' => 'newsDataView', 'as' => 'newsCategoryView', 'as' => 'newsAllCategory']);
 
 Route::get('/login', [LoginController::class, 'index']);
 Route::post('/login', [LoginController::class, 'verify'])->name('login');
@@ -30,8 +30,8 @@ Route::get('/logout', [LogoutController::class, 'index']);
 Route::get('/about', function () {
     return view('about');
 });
-Route::get('/blog', [BlogController::class, 'viewAllBlog']);
-Route::get('/blog/{slug}', [BlogController::class, 'individualBlog', 'as' => 'individual', 'as' => 'allBlogData']);
+Route::get('/news', [NewsController::class, 'viewAllNews']);
+Route::get('/news/{slug}', [NewsController::class, 'individualNews', 'as' => 'individual', 'as' => 'allNewsData']);
 Route::get('/category/{slug}', [CategoryController::class, 'individualCategory', 'as' => 'categoryone', 'as' => 'categoryall']);
 Route::get('/contact', function () {
     return view('contact');
@@ -56,19 +56,19 @@ Route::group(['middleware' => ['sess']], function () {
         Route::get('/admin', function () {
             return view('admin.dashboard');
         });
-        Route::get('/admin/blog-category', [CategoryController::class, 'index']);
-        Route::post('/admin/blog-category', [CategoryController::class, 'create']);
+        Route::get('/admin/category', [CategoryController::class, 'index']);
+        Route::post('/admin/category', [CategoryController::class, 'create']);
 
-        Route::get('/admin/upload', [BlogController::class, 'index']);
-        Route::post('/admin/upload', [BlogController::class, 'create'])
+        Route::get('/admin/upload', [NewsController::class, 'index']);
+        Route::post('/admin/upload', [NewsController::class, 'create'])
             ->name('admin.store');
 
-        Route::get('/admin/blog', [BlogController::class, 'show', 'as' => 'admin.viewAllBlog']);
+        Route::get('/admin/news', [NewsController::class, 'show', 'as' => 'admin.viewAllNews']);
 
-        Route::get('/admin/blog-edit/{slug}', [BlogController::class, 'showBlogEdit', 'as' => 'admin.editBlog', 'as' => 'categoryEdit']);
-        Route::post('/admin/blog-edit/{slug}', [BlogController::class, 'update']);
+        Route::get('/admin/edit/{slug}', [NewsController::class, 'showNewsEdit', 'as' => 'admin.editNews', 'as' => 'categoryNews']);
+        Route::post('/admin/edit/{slug}', [NewsController::class, 'update']);
 
-        Route::get('/admin/blog-delete/{slug}', [BlogController::class, 'showBlogDestroy', 'as' => 'admin.deleteBlog']);
-        Route::post('/admin/blog-delete/{slug}', [BlogController::class, 'destroy']);
+        Route::get('/admin/delete/{slug}', [NewsController::class, 'showNewsDestroy', 'as' => 'admin.deleteNews']);
+        Route::post('/admin/delete/{slug}', [NewsController::class, 'destroy']);
     });
 });
