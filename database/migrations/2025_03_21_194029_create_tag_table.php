@@ -4,7 +4,8 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration {
+return new class extends Migration
+{
     /**
      * Run the migrations.
      *
@@ -12,15 +13,10 @@ return new class extends Migration {
      */
     public function up()
     {
-        Schema::create('blog', function (Blueprint $table) {
-            $table->id();
-            $table->text('title');
-            $table->text('slug');
-            $table->text('description');
-            $table->text('metaDescription');
-            $table->text('author');
+        Schema::create('tag', function (Blueprint $table) {
+            $table->uuid('id')->primary(); // Use UUID for the primary key
+            $table->text('tagName');
             $table->text('status');
-            $table->text('category');
             $table->timestamps();
         });
     }
@@ -32,6 +28,6 @@ return new class extends Migration {
      */
     public function down()
     {
-        Schema::dropIfExists('blog');
+        Schema::dropIfExists('tag');
     }
 };

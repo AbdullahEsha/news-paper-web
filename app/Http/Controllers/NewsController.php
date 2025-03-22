@@ -19,7 +19,7 @@ class NewsController extends Controller
     public function index(Request $req)
     {
         try {
-            $category = Category::orderBy('id', 'desc')->get();
+            $category = Category::orderBy('created_at', 'desc')->get();
             return view('admin.upload')->with('category', $category);
         } catch (\Exception $e) {
             $req->session(['error', $e->getMessage()]);
@@ -33,22 +33,33 @@ class NewsController extends Controller
      */
     public function create(Request $req)
     {
-        $NewsUpload = new News();
+        $newsUpload = new News();
         try {
-            $NewsUpload->title = $req->title;
-            $NewsUpload->slug = $req->slug;
-            $NewsUpload->description = $req->description;
-            $NewsUpload->metaDescription = $req->metaDescription;
-            $NewsUpload->author = $req->author;
-            $NewsUpload->status = $req->status;
-            $NewsUpload->category = $req->category;
+            // Debug the request data
+            $newsUpload->title = $req->title;
+            $newsUpload->description = $req->description;
+            $newsUpload->author = $req->author;
+            $newsUpload->status = $req->status;
+            $newsUpload->category = $req->category;
+            $newsUpload->tag = json_encode($req->tag);
+            $newsUpload->location = $req->location;
 
-            $NewsUpload->save();
+            if ($req->hasFile('image')) {
+                $file = $req->file('image');
+                $extension = $file->getClientOriginalExtension();
+                $filename = $file->getClientOriginalName() . '_' . time() . '.' . $extension;
+                $file->move('uploads/news/', $filename);
+                $newsUpload->image = $filename;
+            } else {
+                $newsUpload->image = '';
+            }
 
-            $req->session(['msg', 'News was successfully uploaded!!']);
-            return redirect('/admin/News');
+            $newsUpload->save();
+
+            $req->session()->put('msg', 'News was successfully uploaded!!');
+            return redirect('/admin');
         } catch (\Exception $e) {
-            $req->session(['error', $e->getMessage()]);
+            $req->session()->put('error', $e->getMessage());
             return redirect('/error');
         }
     }
@@ -63,8 +74,8 @@ class NewsController extends Controller
     public function show(Request $req)
     {
         try {
-            $NewsData = News::orderBy('id', 'desc')->get();
-            return view('admin.viewAll')->with('NewsData', $NewsData);
+            $newsData = News::orderBy('id', 'desc')->get();
+            return view('admin.viewAll')->with('newsData', $newsData);
         } catch (\Exception $e) {
             $req->session(['error', $e->getMessage()]);
         }

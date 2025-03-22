@@ -23,17 +23,13 @@ class RegisterController extends Controller
             'password' => 'required|string|min:8|confirmed',
         ]);
 
-        if ($req->password !== $req->password_confirmation) {
-            return redirect('/register')->with('error', 'Password and confirm password do not match!');
-        }
-
         try {
             // Create a new user
             $user = new User();
             $user->name = $validatedData['name'];
             $user->email = $validatedData['email'];
             $user->phone = $validatedData['phone'];
-            $user->userType = "user";
+            $user->role = "user"; // Ensure this matches the fillable field in the model
             $user->password = Hash::make($validatedData['password']);
 
             $user->save();
