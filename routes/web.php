@@ -6,6 +6,8 @@ use App\Http\Controllers\LogoutController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\LocationController;
+use App\Http\Controllers\TagController;
 
 /*
 |--------------------------------------------------------------------------
@@ -58,6 +60,12 @@ Route::group(['middleware' => ['sess']], function () {
         });
         Route::get('/admin/category', [CategoryController::class, 'index']);
         Route::post('/admin/category', [CategoryController::class, 'create']);
+
+        Route::get('/admin/location', [LocationController::class, 'index']);
+        //Route::post('/admin/location', [CategoryController::class, 'create']);
+
+        Route::get('/admin/tags', [TagController::class, 'index']);
+        //Route::post('/admin/category', [CategoryController::class, 'create']);
 
         Route::get('/admin/upload', [NewsController::class, 'index']);
         Route::post('/admin/upload', [NewsController::class, 'create'])
