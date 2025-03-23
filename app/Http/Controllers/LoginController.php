@@ -20,9 +20,11 @@ class LoginController extends Controller
         if ($user) {
             if (Hash::check($req->password, $user->password)) {
                 $req->session()->put('name', $user->name);
-                $req->session()->put('type', $user->userType);
+                $req->session()->put('role', $user->role);
 
-                if ($req->session()->get('type') == 'admin') {
+                if ($req->session()->get('role') == 'admin') {
+                    return redirect('/admin');
+                } elseif ($req->session()->get('role') == 'user') {
                     return redirect('/');
                 } else {
                     $req->session(['error', 'Invalid username or password']);

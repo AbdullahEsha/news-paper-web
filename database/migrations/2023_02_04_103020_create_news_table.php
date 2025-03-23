@@ -12,10 +12,16 @@ return new class extends Migration {
      */
     public function up()
     {
-        Schema::create('category', function (Blueprint $table) {
+        Schema::create('news', function (Blueprint $table) {
             $table->uuid('id')->primary(); // Use UUID for the primary key
-            $table->text('categoryName');
+            $table->text('image');
+            $table->text('title');
+            $table->text('description');
+            $table->text('author');
             $table->text('status');
+            $table->text('category');
+            $table->json('tag');
+            $table->text('location');
             $table->timestamps();
         });
     }
@@ -27,6 +33,6 @@ return new class extends Migration {
      */
     public function down()
     {
-        Schema::dropIfExists('category');
+        Schema::dropIfExists('news');
     }
 };

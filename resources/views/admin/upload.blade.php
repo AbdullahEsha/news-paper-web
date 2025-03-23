@@ -2,24 +2,36 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
-    @include('components.head')
-    <title>Admin - Upload Blog</title>
+    <x-head />
+    <title>Admin - Upload</title>
 </head>
 
 <body class="bg-gray-100">
     <div class="flex min-h-screen">
         <!-- Sidebar -->
-        <!-- @include('components.sidebar') -->
+        <x-sidebar />
 
         <!-- Main Content -->
         <div class="flex-1 p-8">
-            <h1 class="text-2xl font-bold text-gray-900 mb-6">Upload Blog</h1>
+            <h1 class="text-2xl font-bold text-gray-900 mb-6">Upload News</h1>
             <hr class="mb-6 border-gray-300" />
 
             <!-- Form Container -->
             <div class="bg-white rounded-lg shadow-md p-6">
                 <form method="POST" action="{{ route('admin.store') }}" enctype="multipart/form-data">
                     @csrf
+
+                    <!-- Image Field -->
+                    <div class="mb-6">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                            <strong>Image:</strong>
+                        </label>
+                        <input
+                            type="file"
+                            name="image"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            required />
+                    </div>
 
                     <!-- Title Field -->
                     <div class="mb-6">
@@ -32,33 +44,6 @@
                             class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                             placeholder="Enter blog title"
                             required />
-                    </div>
-
-                    <!-- Slug Field -->
-                    <div class="mb-6">
-                        <label class="block text-sm font-medium text-gray-700 mb-2">
-                            <strong>Slug:</strong>
-                        </label>
-                        <input
-                            type="text"
-                            name="slug"
-                            id="slug"
-                            class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            placeholder="Enter title to get slug"
-                            required />
-                    </div>
-
-                    <!-- Meta Description Field -->
-                    <div class="mb-6">
-                        <label class="block text-sm font-medium text-gray-700 mb-2">
-                            <strong>Meta Description:</strong>
-                        </label>
-                        <textarea
-                            name="metaDescription"
-                            class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            rows="3"
-                            placeholder="Enter blog meta description"
-                            required></textarea>
                     </div>
 
                     <!-- Author Field -->
@@ -102,12 +87,40 @@
                                 required>
                                 <option disabled>Choose Category</option>
                                 @for($i = 0; $i < count($category); $i++)
+                                    @if($category[$i]['status']=='publish' )
                                     <option value="{{ $category[$i]['categoryName'] }}">
                                     {{ $category[$i]['categoryName'] }}
                                     </option>
+                                    @endif
                                     @endfor
                             </select>
                         </div>
+                    </div>
+
+                    <!-- Tag Field -->
+                    <div class="mb-6">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                            <strong>Tag:</strong>
+                        </label>
+                        <input
+                            type="text"
+                            name="tag"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            placeholder="Enter tags (comma separated)"
+                            required />
+                    </div>
+
+                    <!-- Location Field -->
+                    <div class="mb-6">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                            <strong>Location:</strong>
+                        </label>
+                        <input
+                            type="text"
+                            name="location"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            placeholder="Enter location"
+                            required />
                     </div>
 
                     <!-- Description Field -->
@@ -122,7 +135,12 @@
                     </div>
 
                     <!-- Submit Button -->
-                    <div class="text-center">
+                    <div class="flex justify-end">
+                        <a
+                            href="/admin"
+                            class="px-6 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500 mr-4">
+                            Cancel
+                        </a>
                         <button
                             type="submit"
                             class="px-6 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
@@ -139,6 +157,6 @@
         CKEDITOR.replace('editor');
     </script>
 </body>
-@include("components/bootstrapscript")
+<x-bootstrapscript />
 
 </html>

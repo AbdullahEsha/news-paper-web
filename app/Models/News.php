@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
-class Category extends Model
+class News extends Model
 {
     use HasFactory;
     /**
@@ -14,9 +14,9 @@ class Category extends Model
      *
      * @var array<int, string>
      */
-    protected $table = 'category';
+    protected $table = 'news';
     protected $primaryKey = "id";
-    protected $fillable = ['categoryName', 'status'];
+    protected $fillable = ['title', 'description', 'author', 'status', 'category', 'tag', 'location', 'image'];
 
     const CREATED_AT = "created_at";
     const UPDATED_AT = "updated_at";
