@@ -16,10 +16,10 @@ class VerifyAdmin
      */
     public function handle(Request $request, Closure $next)
     {
-        if ($request->session()->get('type') == 'admin') {
+        if ($request->session()->get('role') == 'admin') {
             return $next($request);
         } else {
-            $request->session()->flash('error', 'Please login as an Admin first...');
+            $request->session()->put('error', 'You are not authorized to access this page.');
             return redirect()->route('login');
         }
     }

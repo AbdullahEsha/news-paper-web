@@ -3,7 +3,9 @@
 
 <head>
     @include("components/head")
-    <title>Admin - Upload Blog</title>
+    <title>
+        Admin - Category
+    </title>
 </head>
 
 <body class="bg-gray-100">
@@ -13,7 +15,7 @@
 
         <!-- Main Content -->
         <div class="flex-1 p-8">
-            <h1 class="text-2xl font-bold mb-4">Blogs Category</h1>
+            <h1 class="text-2xl font-bold mb-4">Category</h1>
             <hr class="mb-4" />
 
             <!-- Container -->
@@ -21,11 +23,12 @@
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <!-- Table Section -->
                     <div class="md:col-span-2">
-                        <table class="min-w-full bg-white border rounded-lg overflow-hidden">
+                        <table class="min-w-full bg-white border rounded-lg overflow-hidden text-left">
                             <thead class="bg-gray-200">
                                 <tr>
                                     <th class="px-4 py-2">#</th>
                                     <th class="px-4 py-2">Category Name</th>
+                                    <th class="px-4 py-2">Status</th>
                                     <th class="px-4 py-2">Action</th>
                                 </tr>
                             </thead>
@@ -33,6 +36,13 @@
                                 @for($i = 0; $i < count($categorydata); $i++) <tr class="hover:bg-gray-50">
                                     <td class="px-4 py-2">{{ $i + 1 }}</td>
                                     <td class="px-4 py-2">{{ $categorydata[$i]['categoryName'] }}</td>
+                                    <td class="px-4 py-2">
+                                        @if($categorydata[$i]['status'] == 'draft')
+                                        <span class="bg-yellow-400 text-white px-2 py-1 rounded-full">Draft</span>
+                                        @else
+                                        <span class="bg-green-400 text-white px-2 py-1 rounded-full">Publish</span>
+                                        @endif
+                                    </td>
                                     <td class="px-4 py-2">
                                         <a href="/admin/category-delete/{{ $categorydata[$i]['id'] }}" class="text-red-600 hover:text-red-800 mr-2">
                                             <i class="fas fa-trash" title="Delete"></i>
@@ -53,7 +63,7 @@
                             @csrf
                             <!-- Category Name -->
                             <div class="mb-4">
-                                <label class="block text-gray-700 font-bold mb-2"><strong>Category Name :</strong></label>
+                                <label class="block text-gray-700 font-bold mb-2"><strong>Category Name:</strong></label>
                                 <input type="text" name="categoryName" placeholder="Enter category name."
                                     class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     required />
@@ -69,14 +79,6 @@
                                     <option value="draft">Draft</option>
                                     <option value="publish">Publish</option>
                                 </select>
-                            </div>
-
-                            <!-- Meta Description -->
-                            <div class="mb-4">
-                                <label class="block text-gray-700 font-bold mb-2"><strong>Meta Description :</strong></label>
-                                <textarea name="metaDescription" placeholder="Enter category meta description."
-                                    class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                    rows="5" required></textarea>
                             </div>
 
                             <!-- Submit Button -->

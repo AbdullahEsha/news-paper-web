@@ -4,9 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Category extends Model
 {
+    use HasFactory;
     /**
      * The attributes that are mass assignable.
      *
@@ -14,8 +16,25 @@ class Category extends Model
      */
     protected $table = 'category';
     protected $primaryKey = "id";
-    protected $fillable = ['categoryName', 'metaDescription', 'status'];
-    
+    protected $fillable = ['categoryName', 'status'];
+
     const CREATED_AT = "created_at";
     const UPDATED_AT = "updated_at";
+
+    /**
+     * The "booting" method of the model.
+     *
+     * @return void
+     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        // Generate UUID if not provided
+        static::creating(function ($model) {
+            if (empty($model->{$model->getKeyName()})) {
+                $model->{$model->getKeyName()} = (string) Str::uuid();
+            }
+        });
+    }
 }

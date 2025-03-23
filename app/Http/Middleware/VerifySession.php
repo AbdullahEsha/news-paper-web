@@ -19,7 +19,7 @@ class VerifySession
         if ($request->session()->has('name')) {
             return $next($request);
         } else {
-            $request->session()->flash('error', 'Please login first');
+            $request->session()->put('error', 'You are not authorized to access this page.');
             return redirect('/login');
         }
     }

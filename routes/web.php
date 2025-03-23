@@ -33,8 +33,8 @@ Route::get('/about', function () {
     return view('about');
 });
 Route::get('/news', [NewsController::class, 'viewAllNews']);
-Route::get('/news/{slug}', [NewsController::class, 'individualNews', 'as' => 'individual', 'as' => 'allNewsData']);
-Route::get('/category/{slug}', [CategoryController::class, 'individualCategory', 'as' => 'categoryone', 'as' => 'categoryall']);
+Route::get('/news/{id}', [NewsController::class, 'individualNews', 'as' => 'individual', 'as' => 'allNewsData']);
+Route::get('/category/{id}', [CategoryController::class, 'individualCategory', 'as' => 'categoryone', 'as' => 'categoryall']);
 Route::get('/contact', function () {
     return view('contact');
 });
