@@ -87,6 +87,8 @@ module.exports = {
             },
         },
     },
-    plugins: [require("tailwindcss-animate")],
-    // Removed CSS rules. Add them to an external CSS file or a <style> block.
+    plugins: [
+        require("tailwindcss-animate"),
+        require("@tailwindcss/line-clamp"),
+    ],
 };

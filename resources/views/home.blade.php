@@ -4,99 +4,171 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ajbarta - English News Portal</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>
+        The Times of journal
+    </title>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     @include("components/head")
-    <style>
-        body {
-            font-family: 'Noto Sans', sans-serif;
-        }
-
-        .logo {
-            font-weight: 700;
-            font-size: 2.5rem;
-        }
-    </style>
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     keyframes: {
-                        scrollLeft: {
-                            '0%': {
-                                transform: 'translateX(0)'
+                        "accordion-down": {
+                            from: {
+                                height: 0
                             },
-                            '100%': {
-                                transform: 'translateX(-100%)'
-                            }
-                        }
+                            to: {
+                                height: "var(--radix-accordion-content-height)"
+                            },
+                        },
+                        "accordion-up": {
+                            from: {
+                                height: "var(--radix-accordion-content-height)"
+                            },
+                            to: {
+                                height: 0
+                            },
+                        },
+                        zoomIn: {
+                            "0%": {
+                                transform: "scale(1)"
+                            },
+                            "100%": {
+                                transform: "scale(1.1)"
+                            },
+                        },
                     },
                     animation: {
-                        'scroll-left': 'scrollLeft 20s linear infinite',
-                    }
+                        "accordion-down": "accordion-down 0.2s ease-out",
+                        "accordion-up": "accordion-up 0.2s ease-out",
+                        "zoom-in": "zoomIn 0.2s ease-out",
+                    },
                 }
             }
         }
+        plugins = [
+            require('@tailwindcss/line-clamp'),
+        ];
     </script>
-    <style type="text/css">
-        .hover\:pause-animation:hover {
-            animation-play-state: paused;
-        }
-    </style>
 </head>
 
 <body>
     <!-- Top header with date and logo -->
     <header class="border-b">
-        <div class="container mx-auto px-4 py-3 flex items-center justify-between">
-            <!-- Left section with menu and date -->
-            <div class="flex items-center">
-                <button id="menuToggle" class="mr-3">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                    </svg>
-                </button>
-                <div class="text-sm">
+        <div class="container mx-auto px-4 py-3">
+            <!-- Mobile view (flex column) -->
+            <div class="md:hidden flex flex-col space-y-3">
+                <div class="flex items-center justify-between w-full">
+                    <button id="menuToggle" class="block">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+
+                    <!-- Center logo for mobile -->
+                    <div class="logo text-center">
+                        <a href="/" class="text-black font-bold text-lg">
+                            The Times of journal
+                        </a>
+                    </div>
+
+                    <!-- Search toggle for mobile -->
+                    <button id="searchToggle" class="block">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Mobile date display -->
+                <div class="text-sm text-center">
                     <div>Monday, March 14, 2025</div>
                     <div>30 Falgun 1431</div>
                 </div>
+
+                <!-- Mobile tagline -->
+                <div class="text-xs text-center">
+                    Daily news with publishing rights
+                </div>
+
+                <!-- Mobile search (hidden by default) -->
+                <div id="mobileSearch" class="hidden w-full">
+                    <div class="relative">
+                        <input type="text" placeholder="Search..." class="border rounded-full py-1 px-4 pr-10 text-sm w-full">
+                        <button class="absolute right-3 top-1/2 transform -translate-y-1/2 text-red-500">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
             </div>
 
-            <!-- Center logo -->
-            <div class="logo text-center">
-                <a href="/" class="text-black">
-                    The Times of journal
-                </a>
-                <div class="text-xs text-center">Daily news with publishing rights</div>
-            </div>
+            <!-- Desktop view (flex row) -->
+            <div class="hidden md:flex items-center justify-between">
+                <!-- Left section with menu and date -->
+                <div class="flex items-center">
+                    <button id="menuToggleDesktop" class="mr-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                    <div class="text-sm">
+                        <div>Monday, March 14, 2025</div>
+                        <div>30 Falgun 1431</div>
+                    </div>
+                </div>
 
-            <!-- Right search box -->
-            <div class="relative">
-                <input type="text" placeholder="Search..." class="border rounded-full py-1 px-4 pr-10 text-sm w-48">
-                <button class="absolute right-3 top-1/2 transform -translate-y-1/2 text-red-500">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                    </svg>
-                </button>
+                <!-- Center logo -->
+                <div class="logo text-center">
+                    <a href="/" class="text-black font-bold text-xl">
+                        The Times of journal
+                    </a>
+                    <div class="text-xs text-center">Daily news with publishing rights</div>
+                </div>
+
+                <!-- Right search box -->
+                <div class="relative">
+                    <input type="text" placeholder="Search..." class="border rounded-full py-1 px-4 pr-10 text-sm w-48">
+                    <button class="absolute right-3 top-1/2 transform -translate-y-1/2 text-red-500">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                    </button>
+                </div>
             </div>
         </div>
     </header>
+
     <!-- Navigation menu -->
     <nav class="border-b">
         <div class="container mx-auto px-4 py-2">
-            <ul class="flex flex-wrap justify-center space-x-4 text-sm">
-                <li><a href="#" class="hover:text-red-500">Home</a></li>
-                <li><a href="#" class="hover:text-red-500">Bangladesh</a></li>
-                <li><a href="#" class="hover:text-red-500">Foreign Economy</a></li>
-                <li><a href="#" class="hover:text-red-500">Politics</a></li>
-                <li><a href="#" class="hover:text-red-500">Around the Country</a></li>
-                <li><a href="#" class="hover:text-red-500">World</a></li>
-                <li><a href="#" class="hover:text-red-500">Law & Rights</a></li>
-                <li><a href="#" class="hover:text-red-500">Business</a></li>
-                <li><a href="#" class="hover:text-red-500">Opinion</a></li>
-                <li><a href="#" class="hover:text-red-500">More</a></li>
-            </ul>
+            <!-- Desktop navigation -->
+            <div class="hidden md:block">
+                <ul class="flex flex-wrap justify-center space-x-4 text-sm">
+                    @foreach($newsAllCategory as $category)
+                    @if($category['status'] == 'publish')
+                    <li><a href="#" class="hover:text-red-500">
+                            {{ $category['categoryName'] }}
+                        </a></li>
+                    @endif
+                    @endforeach
+                </ul>
+            </div>
+
+            <!-- Mobile navigation (scrollable horizontally) -->
+            <div class="md:hidden overflow-x-auto whitespace-nowrap pb-1 -mx-4 px-4">
+                <ul class="inline-flex space-x-4 text-sm">
+                    @foreach($newsAllCategory as $category)
+                    @if($category['status'] == 'publish')
+                    <li class="inline-block"><a href="#" class="hover:text-red-500 whitespace-nowrap">
+                            {{ $category['categoryName'] }}
+                        </a></li>
+                    @endif
+                    @endforeach
+                </ul>
+            </div>
         </div>
     </nav>
 
@@ -112,16 +184,36 @@
                 </button>
             </div>
             <ul class="space-y-4">
-                <li><a href="#" class="block py-2 hover:text-red-500">Home</a></li>
-                <li><a href="#" class="block py-2 hover:text-red-500">Bangladesh</a></li>
-                <li><a href="#" class="block py-2 hover:text-red-500">Foreign Economy</a></li>
-                <li><a href="#" class="block py-2 hover:text-red-500">Politics</a></li>
-                <li><a href="#" class="block py-2 hover:text-red-500">Around the Country</a></li>
-                <li><a href="#" class="block py-2 hover:text-red-500">World</a></li>
-                <li><a href="#" class="block py-2 hover:text-red-500">Law & Rights</a></li>
-                <li><a href="#" class="block py-2 hover:text-red-500">Business</a></li>
-                <li><a href="#" class="block py-2 hover:text-red-500">Opinion</a></li>
-                <li><a href="#" class="block py-2 hover:text-red-500">More</a></li>
+                @foreach($newsAllCategory as $category)
+                @if($category['status'] == 'publish')
+                <li><a href="#" class="hover:text-red-500 block py-2 border-b border-gray-100">
+                        {{ $category['categoryName'] }}
+                    </a></li>
+                @endif
+                @endforeach
+            </ul>
+        </div>
+    </div>
+
+    <!-- Mobile menu (hidden by default) -->
+    <div id="mobileMenu" class="fixed inset-0 bg-white z-50 transform -translate-x-full transition-transform duration-300 ease-in-out">
+        <div class="p-4">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-xl font-bold">Menu</h2>
+                <button id="closeMenu" class="text-gray-500">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            <ul class="space-y-4">
+                @foreach($newsAllCategory as $category)
+                @if($category['status'] == 'publish')
+                <li><a href="#" class="hover:text-red-500">
+                        {{ $category['categoryName'] }}
+                    </a></li>
+                @endif
+                @endforeach
             </ul>
         </div>
     </div>
@@ -160,20 +252,32 @@
         <div class="container mx-auto">
             <div class="grid grid-cols-1 lg:grid-cols-4 gap-4 divide-x divide-gray-400 bg-yellow-50 py-6 px-4 border-b border-gray-400 mb-6">
                 <!-- Main News -->
+                @foreach($newsDataView as $news)
+                @if($news['status'] == 'publish' && $news['location'] == 'top')
                 <div class="lg:col-span-2 overflow-hidden">
                     <div class="flex flex-col md:flex-row md:item-center gap-3">
                         <div class="md:w-3/5">
-                            <h2 class="text-md font-bold mb-3 line-clamp-2">UN Secretary General and Chief Advisor to discuss Rohingya in Lahye</h2>
-                            <p class="text-gray-600 text-sm line-clamp-4">The UN Secretary General and Advisor are coming to Bangladesh on a multilateral visit on March 16 in the afternoon. The next day, they will meet with the Chief Advisor. Significant changes regarding the Rohingya situation are expected. The UN Secretary General and Advisor are coming to Bangladesh on a multilateral visit on March 16 in the afternoon. The next day, they will meet with the Chief Advisor.</p>
+                            <h2 class="text-md font-bold mb-3 line-clamp-2">{{ $news['title'] }}</h2>
+                            <p class="text-gray-600 text-sm line-clamp-4">
+                                <!-- {{$news['description'] }} -->
+                                <!-- Data parse from html tags -->
+                                {!! $news['description'] !!}
+                            </p>
                         </div>
                         <div class="md:w-2/5 overflow-hidden">
-                            <img src="https://www.ajbarta.com/uploads/ab-bd-17-3-20250317163938.jpg" alt="UN Secretary General" class="w-full h-full object-cover hover:scale-110 transition-transform duration-300 ease-in-out animate-zoomIn">
+                            <img
+                                src="{{ asset('uploads/news/'.$news['image']) }}"
+                                alt="UN Secretary General"
+                                class="w-full h-full object-cover hover:scale-110 transition-transform duration-300 ease-in-out animate-zoomIn">
                         </div>
                     </div>
                 </div>
+                @endif
+                @endforeach
                 <!-- Right Side News -->
                 <div class="space-y-4 pl-4">
-                    @foreach([1, 2] as $index)
+                    @foreach($newsDataView as $news)
+                    @if($news['status'] == 'publish' && $news['location'] == 'center')
                     <div class="flex space-x-4">
                         <div>
                             <h3 class="text-sm font-bold mb-2">Bangladesh information matters, Chief Advisor available according to law</h3>
@@ -182,18 +286,23 @@
                             <img src="https://www.ajbarta.com/uploads/ab-yunus-12-3-20250312165613.jpg" alt="News" class="w-14 h-14 object-cover hover:scale-110 transition-transform duration-300 ease-in-out animate-zoomIn">
                         </div>
                     </div>
+                    @endif
                     @endforeach
                 </div>
                 <div class="space-y-4 pl-4">
-                    @foreach([1, 2] as $index)
+                    @foreach($newsDataView as $news)
+                    @if($news['status'] == 'publish' && $news['location'] == 'right-r')
                     <div class="flex space-x-4">
                         <div>
-                            <h3 class="text-sm font-bold mb-2">Bangladesh information matters, Chief Advisor available according to law</h3>
+                            <h3 class="text-sm font-bold mb-2">
+                                {{ $news['title'] }}
+                            </h3>
                         </div>
                         <div class="w-14 h-14 flex-shrink-0 overflow-hidden">
-                            <img src="https://www.ajbarta.com/uploads/ab-yunus-12-3-20250312165613.jpg" alt="News" class="w-14 h-14 object-cover hover:scale-110 transition-transform duration-300 ease-in-out animate-zoomIn">
+                            <img src="{{ asset('uploads/news/'.$news['image']) }}" alt="News" class="w-14 h-14 object-cover hover:scale-110 transition-transform duration-300 ease-in-out animate-zoomIn">
                         </div>
                     </div>
+                    @endif
                     @endforeach
                 </div>
             </div>
@@ -735,22 +844,63 @@
         </div>
     </footer>
 
+    <script src="{{ asset('js/app.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <script>
-        // Mobile menu toggle functionality
-        const menuToggle = document.getElementById('menuToggle');
-        const closeMenu = document.getElementById('closeMenu');
-        const mobileMenu = document.getElementById('mobileMenu');
-
-        menuToggle.addEventListener('click', () => {
-            mobileMenu.classList.remove('-translate-x-full');
-        });
-
-        closeMenu.addEventListener('click', () => {
-            mobileMenu.classList.add('-translate-x-full');
-        });
-
         document.addEventListener('DOMContentLoaded', function() {
-            const movingText = document.getElementById('movingText');
+            // Mobile menu toggle functionality
+            const menuToggle = document.getElementById('menuToggle');
+            const menuToggleDesktop = document.getElementById('menuToggleDesktop');
+            const closeMenu = document.getElementById('closeMenu');
+            const mobileMenu = document.getElementById('mobileMenu');
+
+            // Mobile search toggle functionality
+            const searchToggle = document.getElementById('searchToggle');
+            const mobileSearch = document.getElementById('mobileSearch');
+
+            // Menu toggle handlers
+            if (menuToggle && mobileMenu) {
+                menuToggle.addEventListener('click', function() {
+                    mobileMenu.classList.remove('-translate-x-full');
+                    document.body.style.overflow = 'hidden'; // Prevent scrolling when menu is open
+                });
+            }
+
+            if (menuToggleDesktop && mobileMenu) {
+                menuToggleDesktop.addEventListener('click', function() {
+                    mobileMenu.classList.remove('-translate-x-full');
+                    document.body.style.overflow = 'hidden';
+                });
+            }
+
+            if (closeMenu && mobileMenu) {
+                closeMenu.addEventListener('click', function() {
+                    mobileMenu.classList.add('-translate-x-full');
+                    document.body.style.overflow = ''; // Restore scrolling
+                });
+            }
+
+            // Search toggle handler
+            if (searchToggle && mobileSearch) {
+                searchToggle.addEventListener('click', function() {
+                    mobileSearch.classList.toggle('hidden');
+                });
+            }
+
+            // Close menu when clicking outside
+            document.addEventListener('click', function(event) {
+                if (mobileMenu && !mobileMenu.contains(event.target) &&
+                    event.target !== menuToggle &&
+                    event.target !== menuToggleDesktop &&
+                    !menuToggle.contains(event.target) &&
+                    !menuToggleDesktop.contains(event.target)) {
+
+                    if (!mobileMenu.classList.contains('-translate-x-full')) {
+                        mobileMenu.classList.add('-translate-x-full');
+                        document.body.style.overflow = '';
+                    }
+                }
+            });
         });
     </script>
 </body>

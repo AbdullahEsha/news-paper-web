@@ -8,3 +8,11 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" />
 <!-- add tailwind script -->
 <script src="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.js"></script>
+
+<script>
+    tailwind.config = {
+        plugins: [
+            require('@tailwindcss/line-clamp'),
+        ],
+    }
+</script>

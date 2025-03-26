@@ -13,7 +13,8 @@
 
         <!-- Main Content -->
         <div class="flex-1 p-8">
-            <h1 class="text-2xl font-bold mb-4">All Blog</h1>
+            <h1 class="text-2xl font-bold mb-4">All News <span class="text-sm text-green-500">({{ count($newsData) }})</span>
+            </h1>
             <hr class="mb-4" />
 
             <!-- Success Message -->
@@ -33,7 +34,9 @@
             <!-- Search and Table -->
             <div class="container mx-auto">
                 <div class="mb-4 flex items-center justify-between">
-                    <a href="/admin/blog-create" class="bg-blue-500 text-white px-4 py-2 rounded-md">Create Blog</a>
+                    <a href="/admin/upload" class="bg-blue-500 text-white px-4 py-2 rounded-md">
+                        Upload News
+                    </a>
                     <form action="/admin/blog-search" method="POST">
                         @csrf
                         <input type="text" name="search" class="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Search blog by title" required />
@@ -47,6 +50,7 @@
                             <th class="px-4 py-2">#</th>
                             <th class="px-4 py-2">Title</th>
                             <th class="px-4 py-2">Short Description</th>
+                            <th class="px-4 py-2">Category</th>
                             <th class="px-4 py-2">Status</th>
                             <th class="px-4 py-2">Action</th>
                         </tr>
@@ -60,6 +64,7 @@
                                 {{ $matches[0] }}...
                                 @endif
                             </td>
+                            <td class="px-4 py-2">{{ $newsData[$i]['category'] }}</td>
                             <td class="px-4 py-2 capitalize">
                                 @if($newsData[$i]['status'] == 'draft')
                                 <span class="bg-yellow-400 text-white px-2 py-1 rounded-full">Draft</span>

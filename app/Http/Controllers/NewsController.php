@@ -46,8 +46,7 @@ class NewsController extends Controller
 
             if ($req->hasFile('image')) {
                 $file = $req->file('image');
-                $extension = $file->getClientOriginalExtension();
-                $filename = $file->getClientOriginalName() . '_' . time() . '.' . $extension;
+                $filename = time() . "-" . $file->getClientOriginalName();
                 $file->move('uploads/news/', $filename);
                 $newsUpload->image = $filename;
             } else {
@@ -106,11 +105,11 @@ class NewsController extends Controller
     public function viewAllNewsHome(Request $req)
     {
         try {
-            $NewsDataView = News::orderBy('id', 'desc')->get();
-            $NewsCategoryView = News::groupBy('category')->get();
-            $NewsAllCategory = Category::all();
+            $newsDataView = News::orderBy('id', 'desc')->get();
+            $newsCategoryView = News::groupBy('category')->get();
+            $newsAllCategory = Category::all();
 
-            return view('home')->with('NewsDataView', $NewsDataView)->with('NewsCategoryView', $NewsCategoryView)->with('NewsAllCategory', $NewsAllCategory);
+            return view('home', compact('newsDataView', 'newsCategoryView', 'newsAllCategory'));
         } catch (\Exception $e) {
             $req->session(['error', $e->getMessage()]);
             return redirect('/error');
